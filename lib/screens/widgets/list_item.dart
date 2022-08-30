@@ -11,8 +11,10 @@ class ListItem extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: ListTile(
-        leading: CircleAvatar(radius: 40, child: Icon(Icons.task_alt_sharp)),
+        leading: CircleAvatar(radius: 40, child: Text("09:00 Am")),
         title: Text(strings[index]),
+        subtitle: Text("body body body"),
+
 
       ),
     );
