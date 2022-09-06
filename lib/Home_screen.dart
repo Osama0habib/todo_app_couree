@@ -3,6 +3,7 @@ import 'package:todo_app_couree/DatabaseUtil.dart';
 import 'package:todo_app_couree/screens/archive.dart';
 import 'package:todo_app_couree/screens/done.dart';
 import 'package:todo_app_couree/screens/tasks.dart';
+import 'package:intl/intl.dart';
 
 class HomeScreen extends StatefulWidget {
   HomeScreen({Key? key}) : super(key: key);
@@ -17,6 +18,7 @@ class _HomeScreenState extends State<HomeScreen> {
   TextEditingController titleController = TextEditingController();
   TextEditingController bodyController = TextEditingController();
   TextEditingController timeController = TextEditingController();
+  String time = "";
   GlobalKey<FormState> formkey = GlobalKey<FormState>();
   List<Widget> widgets = [
     Tasks(),
@@ -79,7 +81,23 @@ class _HomeScreenState extends State<HomeScreen> {
                             ),
                             Padding(
                               padding: const EdgeInsets.all(8.0),
-                              child: TextFormField(
+                              child:
+                              TextFormField(
+                                onTap: (){
+                                  showDatePicker(context: context, initialDate: DateTime.now(), firstDate: DateTime.now(), lastDate: DateTime(2200),).then((value) {
+                                  time = DateFormat.yMMMd().format(value!);
+                                    showTimePicker(context: context, initialTime: TimeOfDay.now()).then((v) {
+
+                                      timeController.text = time +" "+  v!.format(context);
+                                      time = time +"/"+  v.format(context);
+
+                                    });
+
+                                  });
+                                   // return DatePickerDialog(lastDate: DateTime.now(), initialDate: DateTime.now(), firstDate: DateTime(1800),);
+                                  // });
+                                  //
+                                },
                                   validator: (value) {
                                     if (value!.isEmpty) {
                                       return "Please Add a Title";
@@ -99,7 +117,7 @@ class _HomeScreenState extends State<HomeScreen> {
               isBottomSheetShow = true;
             } else {
               if(formkey.currentState!.validate()){
-                DatabaseUtil.db.insert("todo.db", {"title" : titleController.text , "body" : bodyController.text , "time" : timeController.text});
+                DatabaseUtil.insertToDatabase(titleController.text, bodyController.text, time);
                 Navigator.pop(context);
                 isBottomSheetShow = false;
               }

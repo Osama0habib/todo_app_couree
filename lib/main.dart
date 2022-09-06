@@ -5,7 +5,11 @@ import 'package:todo_app_couree/Home_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await DatabaseUtil.openDB();
+  await DatabaseUtil.openDB().then((value) async {
+    await DatabaseUtil.getFromDataBase();
+
+  });
+
   // await LocalDataBaseUtility().openMyDataBase();
   // await LocalDataBaseUtility().getFromDAtaBase();
 
