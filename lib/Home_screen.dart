@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:todo_app_couree/DatabaseUtil.dart';
+import 'package:todo_app_couree/models/task_model.dart';
+import 'package:todo_app_couree/provider/todo_provider.dart';
 import 'package:todo_app_couree/screens/archive.dart';
 import 'package:todo_app_couree/screens/done.dart';
 import 'package:todo_app_couree/screens/tasks.dart';
@@ -117,7 +120,14 @@ class _HomeScreenState extends State<HomeScreen> {
               isBottomSheetShow = true;
             } else {
               if(formkey.currentState!.validate()){
-                DatabaseUtil.insertToDatabase(titleController.text, bodyController.text, time);
+
+                TodoProvider provider = Provider.of<TodoProvider>(context,listen: false);
+                TaskModel task = TaskModel();
+                task.title = titleController.text;
+                task.body = bodyController.text;
+                task.time = time;
+                task.status =1;
+                provider.insertToDatabase(task);
                 Navigator.pop(context);
                 isBottomSheetShow = false;
               }

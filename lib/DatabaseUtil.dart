@@ -1,8 +1,9 @@
 import 'package:sqflite/sqflite.dart';
+import 'package:todo_app_couree/models/task_model.dart';
 
 class DatabaseUtil {
   static late Database db;
-  static List<Map> tasks = [];
+  static List<TaskModel> tasks = [];
 
   static Future<void> openDB() async {
      await openDatabase(
@@ -23,32 +24,35 @@ class DatabaseUtil {
     ).catchError((error) {});
   }
 
-  static Future<void> insertToDatabase(title ,body , time )async{
-   await db.insert("task", {"title" : title , "body" : body , "time" : time ,"status" : 1}).then((value) {
-     getFromDataBase();
-   });
-  }
-
-
-  static Future<void> getFromDataBase()async{
-    await db.query("task",).then((task) {
-      print(task);
-      tasks = task;
-    });
-  }
-
-  void updateToDatabase(id,title ,body , time ,status )async{
-    await db.update("task", {"title" : title , "body" : body , "time" : time ,"status" : status},where: "id = $id");
-  }
-
-  void deleteFromDatabase(id)async{
-    await db.delete("task", where: id);
-  }
+  // Future<void> insertToDatabase(TaskModel taskModel) async {
+  //   await DatabaseUtil.db.insert("task", taskModel.toMap()).then((value)async {
+  //     // await getFromDb();
+  //   });
+  // }
   //
+  // //
   // static getFromDB()async {
   //   await db.query('task',).then((value) {
-  //     tasks = value;
+  //
+  //     value.forEach((task) {
+  //       tasks.add(TaskModel.fromMap(task));
+  //     });
   //     print(tasks);
   //  });
-  }
+  // }
+
+//
+// Future<void> getFromDb() async {
+//   await DatabaseUtil.db
+//       .query(
+//     "task",
+//   )
+//       .then((task) {
+//     for (var element in task) {
+//       _tasks.add(TaskModel.fromJson(element));
+//     }
+//   }).then((value) {
+//     notifyListeners();
+//   });
+}
 // }

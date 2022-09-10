@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:todo_app_couree/DatabaseUtil.dart';
 import 'package:todo_app_couree/Home_screen.dart';
+import 'package:todo_app_couree/provider/todo_provider.dart';
 // import 'package:todo_app_couree/local_database_utility.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await DatabaseUtil.openDB().then((value) async {
-    await DatabaseUtil.getFromDataBase();
 
   });
 
@@ -23,9 +24,16 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
 // print(LocalDataBaseUtility.tasks);
 
-    return MaterialApp(
-      home: HomeScreen(),
-      debugShowCheckedModeBanner: false,
+    return ChangeNotifierProvider(
+
+      create: (BuildContext context) {
+        return TodoProvider()..getFromDb();
+      },
+      child: MaterialApp(
+        home: HomeScreen(),
+
+        debugShowCheckedModeBanner: false,
+      ),
     );
   }
 }
